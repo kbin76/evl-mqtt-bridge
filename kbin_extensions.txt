@@ -1,0 +1,89 @@
+
+config.json
+-----------
+
+Under "evlConfig", the following two must be enabled (set to true):
+		"proxyenable" : true,
+		"atomicEvents" : true,
+
+
+
+JSON output MQTT Topic
+
+	To have all events (as supported by nodealarmproxy) issued as JSON on MQTT topic, 
+	add the following definition under "evlConfig":
+	"eventAsJSONTopic": "home/alarm/jsonEvt"
+	(where you of course can set the topic name to whatever you like)
+	All types of events will be issued under the same topic.
+
+	Example of JSON output, it will look something like this:
+	{"evtType":"partitionUpdate","partition":1,"code":"656","status":"exitdelay"}
+	{"evtType":"partitionUpdate","partition":1,"code":"655","status":"disarmed"}
+	{"evtType":"partitionUpdate","partition":1,"code":"650","status":"ready"}
+	{"evtType":"zoneUpdate","zone":1,"code":"609","status":"open","zoneLabel":"LARM_EP-Huvudentre"}
+	{"evtType":"partitionUpdate","partition":1,"code":"651","status":"notready"}
+	{"evtType":"zoneUpdate","zone":1,"code":"610","status":"openrestore","zoneLabel":"LARM_EP-Huvudentre"}
+	{"evtType":"partitionUpdate","partition":1,"code":"650","status":"ready"}
+	{"evtType":"systemUpdate","code":"840","status":"troubleledon","partition":1}
+
+	TODO: provide complete JSON schema, now you have to look in source code or perform some 
+	tests to look at the JSON yourself.
+
+
+Boolean output MQTT Topic
+
+	This mode of operation uses only "boolean" MQTT topics, where it publishes a simple
+	on/off as value to various topics. All topics shares the same base topic configured
+	under "mqtt" like this (where "house/alarm/bool" is the base topic):
+		"booleanEventTopic": "house/alarm/bool",
+
+	The following topics are defined:
+		Zones
+			<base-topic>/z<zid>_open			Zone is open
+			<base-topic>/z<zid>_alarm			Zone is in alarm
+			<base-topic>/z<zid>_fault			Zone is faulty
+			<base-topic>/z<zid>_tamper			Zone has been tampered with
+			(<zid> is substituted with zone id)
+
+		Partitions
+			<base-topic>/p<pid>_ready
+			<base-topic>/p<pid>_armed
+			<base-topic>/p<pid>_inalarm
+			<base-topic>/p<pid>_exitdelay
+			<base-topic>/p<pid>_entrydelay
+			<base-topic>/p<pid>_chimeenabled
+			<base-topic>/p<pid>_busy
+			<base-topic>/p<pid>_autoarming
+			<base-topic>/p<pid>_failedtoarm*
+			<base-topic>/p<pid>_keypadlockout*
+			<base-topic>/p<pid>_functionnotavailable*
+			<base-topic>/p<pid>_invalidaccesscode*
+			<base-topic>/p<pid>_pgmoutputinprogress*
+			<base-topic>/p<pid>_userclosing*
+			<base-topic>/p<pid>_specialclosing*
+			<base-topic>/p<pid>_partialclosing*
+			<base-topic>/p<pid>_useropening*
+			<base-topic>/p<pid>_specialopening*
+			(<pid> is substituted with partition id)
+			(*=Since these are not of "status" nature that can represented by on/off,
+			when such event occur, first an "on" will be published and right after an "off",
+			to more simulate an electrical "pulse")
+
+		System
+			<base-topic>/sys_battery_trouble
+			<base-topic>/sys_ac_trouble
+			<base-topic>/sys_bell_trouble
+			<base-topic>/sys_ftc_trouble
+			<base-topic>/sys_general_system_tamper
+			<base-topic>/sys_fire_trouble_alarm
+
+
+Zone Labels
+
+
+	Under "evlConfig", you can add zone labels to the zone information (primarily when using 
+	eventAsJSONTopic functionality):
+		"zoneInfo": {
+			"<zoneId>": { "label": "My textual zone label" },
+		(ex.)	"1": { "label": "Livingroom" }
+		}
