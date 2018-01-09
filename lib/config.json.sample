@@ -8,12 +8,18 @@
                  "partition" : 1,
                  "proxyenable" : true,
                  "atomicEvents" : true,
-                 "logging" : false
+                 "logging" : false,
+                 "zoneInfo": {
+                    "1": { "label": "Livingroom" },
+                    "2": { "label": "Kitchen" }
+                 }
                },
   "mqtt": { "serverUrl": "mqtt:10.1.1.186:1883",
             "controlTopic": "house/alarm/control",
             "rawZoneTopic": "house/alarm/zone",
             "rawPartTopic": "house/alarm/part",
+            "eventAsJSONTopic": "house/alarm/jsonEvt",
+            "booleanEventTopic": "house/alarm/bool",
             "topicMap": { "6-609": {"topic": "house/alarm/zone/6", "message": "on"},
                           "6-610": {"topic": "house/alarm/zone/6", "message": "off"},
                           "part-655": {"topic": "house/alarm/part", "message": "disarmed"},
