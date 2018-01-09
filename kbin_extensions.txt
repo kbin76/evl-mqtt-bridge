@@ -39,21 +39,25 @@ Boolean output MQTT Topic
 
 	The following topics are defined:
 		Zones
-			<base-topic>/z<zid>_open			Zone is open
-			<base-topic>/z<zid>_alarm			Zone is in alarm
-			<base-topic>/z<zid>_fault			Zone is faulty
-			<base-topic>/z<zid>_tamper			Zone has been tampered with
+			<base-topic>/z<zid>_open				Zone is open
+			<base-topic>/z<zid>_alarm				Zone is in alarm
+			<base-topic>/z<zid>_fault				Zone is faulty
+			<base-topic>/z<zid>_tamper				Zone has been tampered with
 			(<zid> is substituted with zone id)
 
 		Partitions
-			<base-topic>/p<pid>_ready
-			<base-topic>/p<pid>_armed
-			<base-topic>/p<pid>_inalarm
-			<base-topic>/p<pid>_exitdelay
-			<base-topic>/p<pid>_entrydelay
-			<base-topic>/p<pid>_chimeenabled
-			<base-topic>/p<pid>_busy
-			<base-topic>/p<pid>_autoarming
+			<base-topic>/p<pid>_ready				Partition is ready to arm
+			<base-topic>/p<pid>_armed				Partition is armed
+			<base-topic>/p<pid>_stayarm				Partition is stay-armed
+			<base-topic>/p<pid>_awayarm				Partition is away-armed
+			<base-topic>/p<pid>_inalarm				Partition is in alarm (BURGLAR/FIRE etc)
+			<base-topic>/p<pid>_exitdelay			Partition is in exit delay mode
+			<base-topic>/p<pid>_entrydelay			Partition is in entry delay mode
+			<base-topic>/p<pid>_busy				Partition is busy (does not seem to work?)
+			<base-topic>/p<pid>_chimeenabled		Chime functionality enabled
+			<base-topic>/p<pid>_trouble				Partition trouble LED is on (any kind of trouble)
+
+			<base-topic>/p<pid>_autoarming*
 			<base-topic>/p<pid>_failedtoarm*
 			<base-topic>/p<pid>_keypadlockout*
 			<base-topic>/p<pid>_functionnotavailable*
@@ -65,17 +69,24 @@ Boolean output MQTT Topic
 			<base-topic>/p<pid>_useropening*
 			<base-topic>/p<pid>_specialopening*
 			(<pid> is substituted with partition id)
-			(*=Since these are not of "status" nature that can represented by on/off,
+
+			<base-topic>/p<pid>_u<uid>_userclosing*		User closing (by access code)
+			<base-topic>/p<pid>_u<uid>_useropening*		User opening (by access code)
+			(<uid> is substituted with numeric user id)
+
+			( *=Since these are not of "status" nature that can represented by on/off,
 			when such event occur, first an "on" will be published and right after an "off",
 			to more simulate an electrical "pulse")
 
 		System
-			<base-topic>/sys_battery_trouble
-			<base-topic>/sys_ac_trouble
-			<base-topic>/sys_bell_trouble
-			<base-topic>/sys_ftc_trouble
-			<base-topic>/sys_general_system_tamper
-			<base-topic>/sys_fire_trouble_alarm
+			<base-topic>/sys_service_is_required
+			<base-topic>/sys_ac_power_lost
+			<base-topic>/sys_telephone_line_fault
+			<base-topic>/sys_failure_to_communicate
+			<base-topic>/sys_sensor_or_zone_fault
+			<base-topic>/sys_sensor_or_zone_tamper
+			<base-topic>/sys_sensor_or_zone_low_battery
+			<base-topic>/sys_loss_of_time
 
 
 Zone Labels
